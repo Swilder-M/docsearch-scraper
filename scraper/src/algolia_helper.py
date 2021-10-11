@@ -30,9 +30,16 @@ class AlgoliaHelper:
             self.algolia_index_tmp.save_rules(query_rules, True, True)
 
         # for emqx docs
-        if current_product and current_version:
+        index_facet_filters = []
+        if current_product:
+            index_facet_filters.append(f'product:{current_product}')
+
+        if current_version:
+            index_facet_filters.append(f'version:{current_version}')
+
+        if index_facet_filters:
             self.algolia_index_tmp.delete_by({
-              'facetFilters': [f'product:{current_product}', f'version:{current_version}']
+              'facetFilters': index_facet_filters
             })
 
     def add_records(self, records, url, from_sitemap):
